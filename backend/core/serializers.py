@@ -5,6 +5,7 @@ from .models import (
     Parceiros, PontosColeta, Solicitacoes, Telefones, Usuarios
 )
 
+
 class AvaliacoesSerializer(ModelSerializer):
     class Meta:
         model = Avaliacoes

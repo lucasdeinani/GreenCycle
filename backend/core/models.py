@@ -1,10 +1,10 @@
-# from django.contrib.auth.models import AbstractUser
 from django.db import models
-
 
 # Criado classe Base para que os campos que são iguais em outras
 # tabelas sejam replicadas de uma forma mais inteligente,
 # sem repetição de códigos
+
+
 class Base(models.Model):
     criado_em = models.DateTimeField()
     atualizado_em = models.DateTimeField()

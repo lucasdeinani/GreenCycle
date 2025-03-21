@@ -1,6 +1,5 @@
 from django.urls import path, include
-# from rest_framework.routers import DefaultRouter
-# from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.contrib import admin
 from .views import (
     AvaliacoesApiView, AvaliacoesApiViewDetail, ClientesApiView,
     ClientesApiViewDetail, ColetasApiView, ColetasApiViewDetail,
@@ -14,12 +13,7 @@ from .views import (
     UsuariosApiView, UsuariosApiViewDetail
 )
 
-# router = DefaultRouter()
-
 urlpatterns = [
-    # path('', include(router.urls)),  # Inclui as rotas da API
-    # path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('v1/api', AvaliacoesApiView.as_view()),
     path('v1/api/<int:id>', AvaliacoesApiViewDetail.as_view()),
     path('v1/api', ClientesApiView.as_view()),
