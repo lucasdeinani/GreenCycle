@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import JsonResponse
 from .models import (
     Avaliacoes, Clientes, Coletas, Enderecos,
     Materiais, MateriaisParceiros, MateriaisPontosColeta, Pagamentos,
@@ -14,6 +15,8 @@ from .serializers import (
     UsuariosSerializer
 )
 
+def home(request):
+    return JsonResponse({"mensagem": "Bem-vindo à API do GreenCycle!"})
 
 class AvaliacoesApiView(APIView):
     def get(self, request):
