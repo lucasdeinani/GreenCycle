@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,9 +17,11 @@ from .serializers import (
 )
 
 def home(request):
-    return JsonResponse({"mensagem": "Bem-vindo à API do GreenCycle!"})
+    return JsonResponse({"mensagem": "APIs GreenCycle App"})
 
 class AvaliacoesApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         avaliacoes = Avaliacoes.objects.all()
         serializer = AvaliacoesSerializer(avaliacoes, many=True)
@@ -32,6 +35,8 @@ class AvaliacoesApiView(APIView):
 
 
 class AvaliacoesApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Avaliacoes.objects.get(pk=pk)
@@ -66,6 +71,8 @@ class AvaliacoesApiViewDetail(APIView):
 
 
 class ClientesApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         clientes = Clientes.objects.all()
         serializer = ClientesSerializer(clientes, many=True)
@@ -79,6 +86,8 @@ class ClientesApiView(APIView):
 
 
 class ClientesApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Clientes.objects.get(pk=pk)
@@ -113,6 +122,8 @@ class ClientesApiViewDetail(APIView):
 
 
 class ColetasApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         coletas = Coletas.objects.all()
         serializer = ColetasSerializer(coletas, many=True)
@@ -126,6 +137,8 @@ class ColetasApiView(APIView):
 
 
 class ColetasApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Coletas.objects.get(pk=pk)
@@ -160,6 +173,8 @@ class ColetasApiViewDetail(APIView):
 
 
 class EnderecosApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         enderecos = Enderecos.objects.all()
         serializer = EnderecosSerializer(enderecos, many=True)
@@ -173,6 +188,8 @@ class EnderecosApiView(APIView):
 
 
 class EnderecosApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Enderecos.objects.get(pk=pk)
@@ -207,6 +224,8 @@ class EnderecosApiViewDetail(APIView):
 
 
 class MateriaisApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         materiais = Materiais.objects.all()
         serializer = MateriaisSerializer(materiais, many=True)
@@ -220,6 +239,8 @@ class MateriaisApiView(APIView):
 
 
 class MateriaisApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Materiais.objects.get(pk=pk)
@@ -254,6 +275,8 @@ class MateriaisApiViewDetail(APIView):
 
 
 class MateriaisParceirosApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         materiasParceiros = MateriaisParceiros.objects.all()
         serializer = MateriaisParceirosSerializer(materiasParceiros, many=True)
@@ -267,6 +290,8 @@ class MateriaisParceirosApiView(APIView):
 
 
 class MateriaisParceirosApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return MateriaisParceiros.objects.get(pk=pk)
@@ -303,6 +328,8 @@ class MateriaisParceirosApiViewDetail(APIView):
 
 
 class MateriaisPontosColetaApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         materiaisPontosColeta = MateriaisPontosColeta.objects.all()
         serializer = MateriaisPontosColetaSerializer(
@@ -318,6 +345,8 @@ class MateriaisPontosColetaApiView(APIView):
 
 
 class MateriaisPontosColetaApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return MateriaisPontosColeta.objects.get(pk=pk)
@@ -354,6 +383,8 @@ class MateriaisPontosColetaApiViewDetail(APIView):
 
 
 class PagamentosApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         pagamentos = Pagamentos.objects.all()
         serializer = PagamentosSerializer(pagamentos, many=True)
@@ -367,6 +398,8 @@ class PagamentosApiView(APIView):
 
 
 class PagamentosApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Pagamentos.objects.get(pk=pk)
@@ -401,6 +434,8 @@ class PagamentosApiViewDetail(APIView):
 
 
 class ParceirosApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         parceiros = Parceiros.objects.all()
         serializer = ParceirosSerializer(parceiros, many=True)
@@ -414,6 +449,8 @@ class ParceirosApiView(APIView):
 
 
 class ParceirosApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Parceiros.objects.get(pk=pk)
@@ -448,6 +485,8 @@ class ParceirosApiViewDetail(APIView):
 
 
 class PontosColetaApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         pontosColeta = PontosColeta.objects.all()
         serializer = PontosColetaSerializer(pontosColeta, many=True)
@@ -461,6 +500,8 @@ class PontosColetaApiView(APIView):
 
 
 class PontosColetaApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return PontosColeta.objects.get(pk=pk)
@@ -495,6 +536,8 @@ class PontosColetaApiViewDetail(APIView):
 
 
 class SolicitacoesApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         solicitacoes = Solicitacoes.objects.all()
         serializer = SolicitacoesSerializer(solicitacoes, many=True)
@@ -508,6 +551,8 @@ class SolicitacoesApiView(APIView):
 
 
 class SolicitacoesApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Solicitacoes.objects.get(pk=pk)
@@ -542,6 +587,8 @@ class SolicitacoesApiViewDetail(APIView):
 
 
 class TelefonesApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         telefones = Telefones.objects.all()
         serializer = TelefonesSerializer(telefones, many=True)
@@ -555,6 +602,8 @@ class TelefonesApiView(APIView):
 
 
 class TelefonesApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Telefones.objects.get(pk=pk)
@@ -589,6 +638,8 @@ class TelefonesApiViewDetail(APIView):
 
 
 class UsuariosApiView(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get(self, request):
         usuarios = Usuarios.objects.all()
         serializer = UsuariosSerializer(usuarios, many=True)
@@ -602,6 +653,8 @@ class UsuariosApiView(APIView):
 
 
 class UsuariosApiViewDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Usuarios.objects.get(pk=pk)

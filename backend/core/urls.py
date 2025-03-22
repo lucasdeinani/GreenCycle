@@ -1,6 +1,10 @@
 from django.urls import path
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 from .views import (
-    AvaliacoesApiView, AvaliacoesApiViewDetail, ClientesApiView,
+    home, AvaliacoesApiView, AvaliacoesApiViewDetail, ClientesApiView,
     ClientesApiViewDetail, ColetasApiView, ColetasApiViewDetail,
     EnderecosApiView, EnderecosApiViewDetail, MateriaisApiView,
     MateriaisApiViewDetail, MateriaisParceirosApiView,
@@ -12,7 +16,13 @@ from .views import (
     UsuariosApiView, UsuariosApiViewDetail
 )
 
+
 urlpatterns = [
+    path('', home, name='home'),
+
+    path('v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
     path('v1/avaliacoes/', AvaliacoesApiView.as_view(), name='avaliacoes-list'),
     path('v1/avaliacoes/<int:id>/', AvaliacoesApiViewDetail.as_view(), name='avaliacoes-detail'),
 
