@@ -25,7 +25,7 @@ class AvaliacoesSerializer(ModelSerializer):
 class ClientesSerializer(ModelSerializer):
     class Meta:
         model = Clientes
-        fiels = [
+        fields = [
             'id',
             'id_usuarios',
             'cpf',
@@ -37,7 +37,7 @@ class ClientesSerializer(ModelSerializer):
 class ColetasSerializer(ModelSerializer):
     class Meta:
         model = Coletas
-        fiels = [
+        fields = [
             'id',
             'id_clientes',
             'id_parceiros',
@@ -55,7 +55,7 @@ class ColetasSerializer(ModelSerializer):
 class EnderecosSerializer(ModelSerializer):
     class Meta:
         model = Enderecos
-        fiels = [
+        fields = [
             'id',
             'cep',
             'estado',
@@ -69,7 +69,7 @@ class EnderecosSerializer(ModelSerializer):
 class MateriaisSerializer(ModelSerializer):
     class Meta:
         model = Materiais
-        fiels = [
+        fields = [
             'id',
             'nome',
             'descricao',
@@ -82,7 +82,7 @@ class MateriaisSerializer(ModelSerializer):
 class MateriaisParceirosSerializer(ModelSerializer):
     class Meta:
         model = MateriaisParceiros
-        fiels = [
+        fields = [
             'id_materiais',
             'id_parceiros',
         ]
@@ -91,7 +91,7 @@ class MateriaisParceirosSerializer(ModelSerializer):
 class MateriaisPontosColetaSerializer(ModelSerializer):
     class Meta:
         model = MateriaisPontosColeta
-        fiels = [
+        fields = [
             'id_materiais',
             'id_pontos_coleta',
         ]
@@ -100,7 +100,7 @@ class MateriaisPontosColetaSerializer(ModelSerializer):
 class PagamentosSerializer(ModelSerializer):
     class Meta:
         model = Pagamentos
-        fiels = [
+        fields = [
             'id',
             'valor_pagamento',
             'saldo_pagamento',
@@ -113,7 +113,7 @@ class PagamentosSerializer(ModelSerializer):
 class ParceirosSerializer(ModelSerializer):
     class Meta:
         model = Parceiros
-        fiels = [
+        fields = [
             'id',
             'id_usuarios',
             'cnpj',
@@ -125,7 +125,7 @@ class ParceirosSerializer(ModelSerializer):
 class PontosColetaSerializer(ModelSerializer):
     class Meta:
         model = PontosColeta
-        fiels = [
+        fields = [
             'id',
             'nome',
             'id_enderecos',
@@ -139,7 +139,7 @@ class PontosColetaSerializer(ModelSerializer):
 class SolicitacoesSerializer(ModelSerializer):
     class Meta:
         model = Solicitacoes
-        fiels = [
+        fields = [
             'id',
             'estado_solicitacao',
             'observacoes',
@@ -154,7 +154,7 @@ class SolicitacoesSerializer(ModelSerializer):
 class TelefonesSerializer(ModelSerializer):
     class Meta:
         model = Telefones
-        fiels = [
+        fields = [
             'id_usuarios',
             'numero',
             'criado_em',
@@ -165,7 +165,7 @@ class TelefonesSerializer(ModelSerializer):
 class UsuariosSerializer(ModelSerializer):
     class Meta:
         model = Usuarios
-        fiels = [
+        fields = [
             'id',
             'nome',
             'email',
