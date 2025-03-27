@@ -1,9 +1,12 @@
+import django.contrib.admin as django_admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+
+from . import admin
 from .views import (
     AvaliacoesViewSet, ClientesViewSet, ColetasViewSet, EnderecosViewSet,
     MateriaisViewSet, MateriaisParceirosViewSet, MateriaisPontosColetaViewSet,
@@ -28,6 +31,7 @@ router.register(r'usuarios', UsuariosViewSet)
 
 urlpatterns = [
     path('', home, name='home'),
+    path('admin/', django_admin.site.urls),
     path('v1/', include(router.urls)),
     path('v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
