@@ -1,3 +1,4 @@
+# from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
 # Criado classe Base para que os campos que são iguais em outras
@@ -11,6 +12,75 @@ class Base(models.Model):
 
     class Meta:
         abstract = True
+
+
+# class UsuarioManager(BaseUserManager):
+#     def create_user(self, nome, email, senha, **extra_fields):
+#         if not email:
+#             raise ValueError('O email é obrigatório')
+
+#         email = self.normalize_email(email)
+#         user = self.model(
+#             nome=nome,
+#             email=email,
+#             **extra_fields
+#         )
+#         user.set_password(senha)
+#         user.save(using=self._db)
+#         return user
+
+
+# Modificar a classe Usuarios para herdar de AbstractBaseUser
+# class Usuarios(AbstractBaseUser):
+class Usuarios(Base):
+    id = models.SmallAutoField(primary_key=True)
+    nome = models.CharField(max_length=100)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    senha = models.TextField()
+    id_endereco = models.ForeignKey(
+        'Enderecos',
+        models.DO_NOTHING,
+        db_column='id_endereco',
+        blank=True,
+        null=True
+    )
+
+    @property
+    def usuario(self):
+        return self
+
+    # Campos necessários para o auth
+    # PASSWORD_FIELD = 'senha'
+    # USERNAME_FIELD = 'email'
+    # REQUIRED_FIELDS = ['nome']
+
+    # objects = UsuarioManager()
+
+    class Meta:
+        managed = False
+        db_table = 'usuarios'
+
+
+class Clientes(Base):
+    id = models.SmallAutoField(primary_key=True)
+    id_usuarios = models.OneToOneField(
+        'Usuarios', models.DO_NOTHING, db_column='id_usuarios')
+    cpf = models.CharField(unique=True, max_length=15)
+
+    class Meta:
+        managed = False
+        db_table = 'clientes'
+
+
+class Parceiros(Base):
+    id = models.SmallAutoField(primary_key=True)
+    id_usuarios = models.OneToOneField(
+        'Usuarios', models.DO_NOTHING, db_column='id_usuarios')
+    cnpj = models.CharField(unique=True, max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = 'parceiros'
 
 
 class Avaliacoes(Base):
@@ -30,17 +100,6 @@ class Avaliacoes(Base):
     class Meta:
         managed = False
         db_table = 'avaliacoes'
-
-
-class Clientes(Base):
-    id = models.SmallAutoField(primary_key=True)
-    id_usuarios = models.OneToOneField(
-        'Usuarios', models.DO_NOTHING, db_column='id_usuarios')
-    cpf = models.CharField(unique=True, max_length=15)
-
-    class Meta:
-        managed = False
-        db_table = 'clientes'
 
 
 class Coletas(Base):
@@ -131,17 +190,6 @@ class Pagamentos(Base):
         db_table = 'pagamentos'
 
 
-class Parceiros(Base):
-    id = models.SmallAutoField(primary_key=True)
-    id_usuarios = models.OneToOneField(
-        'Usuarios', models.DO_NOTHING, db_column='id_usuarios')
-    cnpj = models.CharField(unique=True, max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'parceiros'
-
-
 class PontosColeta(Base):
     id = models.SmallAutoField(primary_key=True)
     nome = models.CharField(max_length=100)
@@ -178,17 +226,3 @@ class Telefones(Base):
     class Meta:
         managed = False
         db_table = 'telefones'
-
-
-class Usuarios(Base):
-    id = models.SmallAutoField(primary_key=True)
-    nome = models.CharField(max_length=100)
-    email = models.CharField(max_length=100, blank=True, null=True)
-    senha = models.TextField()
-    id_endereco = models.ForeignKey(
-        Enderecos, models.DO_NOTHING, db_column='id_endereco',
-        blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'usuarios'
