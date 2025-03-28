@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream:backend/backend/settings.py
 """
 Django settings for backend project.
 
@@ -12,6 +13,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+=======
+from datetime import timedelta
+from pathlib import Path
+# from decouple import config, Csv
+import os
+from dotenv import load_dotenv
+
+# Carrega as variáveis do .env
+load_dotenv()
+>>>>>>> Stashed changes:backend/settings.py
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +35,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#j=f&z0f76--m#fk*y9(^ftu**9od_g%q#mr_2p$$g-1e_(7uo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+<<<<<<< Updated upstream:backend/backend/settings.py
 DEBUG = True
+=======
+# DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+>>>>>>> Stashed changes:backend/settings.py
 
 ALLOWED_HOSTS = []
 
+<<<<<<< Updated upstream:backend/backend/settings.py
+=======
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+>>>>>>> Stashed changes:backend/settings.py
 
 # Application definition
 
@@ -89,7 +110,10 @@ DATABASES = {
     }
 }
 
+<<<<<<< Updated upstream:backend/backend/settings.py
 
+=======
+>>>>>>> Stashed changes:backend/settings.py
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -113,18 +137,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
+# Idioma padrão
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'America/Sao_Paulo'
+# Configuração de fuso horário
+TIME_ZONE = 'America/Sao_Paulo'  # Fuso horário de Brasília
 
-USE_I18N = True
-
+# Use o fuso horário local (False para UTC, True para TIME_ZONE)
 USE_TZ = True
 
+USE_I18N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -152,3 +177,43 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+<<<<<<< Updated upstream:backend/backend/settings.py
+=======
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# Configuração do Redis como cache
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.getenv("REDIS_URL"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": os.getenv("REDIS_PASSWORD"),
+        },
+        "KEY_PREFIX": "recicla_api"
+    }
+}
+
+# Usar Redis para sessões
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+# Configuração adicional para performance
+REDIS_TIMEOUT = 60 * 60 * 24  # 1 dia
+CACHE_MIDDLEWARE_SECONDS = REDIS_TIMEOUT
+
+# Configuração do Celery (se for usar tarefas assíncronas)
+# CELERY_BROKER_URL = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+# CELERY_RESULT_BACKEND = os.getenv("REDIS_URL", "redis://localhost:6379/0")
+>>>>>>> Stashed changes:backend/settings.py
