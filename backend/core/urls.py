@@ -8,7 +8,8 @@ from rest_framework_simplejwt.views import (
 
 # from . import admin
 from .views import (
-    UsuariosCreateViewSet, ClientesCreateViewSet, ParceirosCreateViewSet,
+    UsuariosCreateViewSet, ClienteComUsuarioCreateViewSet,
+    ParceiroComUsuarioCreateViewSet,
     AvaliacoesViewSet, ColetasViewSet, EnderecosViewSet, MateriaisViewSet,
     MateriaisParceirosViewSet, MateriaisPontosColetaViewSet,
     PagamentosViewSet, PontosColetaViewSet, SolicitacoesViewSet,
@@ -20,8 +21,16 @@ router = DefaultRouter()
 
 # Rotas para cadastro e gerenciamento de usuários
 router.register(r'usuarios', UsuariosCreateViewSet, basename='usuarios')
-router.register(r'clientes', ClientesCreateViewSet, basename='clientes')
-router.register(r'parceiros', ParceirosCreateViewSet, basename='parceiros')
+router.register(
+    r'clientes',
+    ClienteComUsuarioCreateViewSet,
+    basename='clientes'
+)
+router.register(
+    r'parceiros',
+    ParceiroComUsuarioCreateViewSet,
+    basename='parceiros'
+)
 
 # Rotas para entidades principais
 router.register(r'avaliacoes', AvaliacoesViewSet, basename='avaliacoes')

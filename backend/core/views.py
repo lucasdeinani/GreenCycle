@@ -10,11 +10,13 @@ from .models import (
     Parceiros, PontosColeta, Solicitacoes, Telefones, Usuarios
 )
 from .serializers import (
-    UsuarioCreateSerializer, ClienteCreateSerializer, ParceiroCreateSerializer,
-    AvaliacoesSerializer, ColetasSerializer, EnderecosSerializer,
-    MateriaisSerializer, MateriaisParceirosSerializer,
-    MateriaisPontosColetaSerializer, PagamentosSerializer,
-    PontosColetaSerializer, SolicitacoesSerializer, TelefonesSerializer
+    UsuarioCreateSerializer, ClienteComUsuarioCreateSerializer,
+    ClienteComUsuarioUpdateSerializer, ParceiroComUsuarioCreateSerializer,
+    ParceiroComUsuarioUpdateSerializer, AvaliacoesSerializer,
+    ColetasSerializer, EnderecosSerializer, MateriaisSerializer,
+    MateriaisParceirosSerializer, MateriaisPontosColetaSerializer,
+    PagamentosSerializer, PontosColetaSerializer, SolicitacoesSerializer,
+    TelefonesSerializer
 )
 
 
@@ -27,21 +29,21 @@ class UsuariosCreateViewSet(viewsets.ModelViewSet):
     queryset = Usuarios.objects.all()
     serializer_class = UsuarioCreateSerializer
 
-    def list(self, request, *args, **kwargs):
-        cache_key = 'usuarios_list'
-        cached_data = cache.get(cache_key)
+    # def list(self, request, *args, **kwargs):
+    #     cache_key = 'usuarios_list'
+    #     cached_data = cache.get(cache_key)
 
-        if cached_data is not None:
-            return Response(cached_data)
+    #     if cached_data is not None:
+    #         return Response(cached_data)
 
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(queryset, many=True)
-        data = serializer.data
+    #     queryset = self.filter_queryset(self.get_queryset())
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     data = serializer.data
 
-        # Armazena no cache por 15 minutos
-        cache.set(cache_key, data, timeout=60*15)
+    #     # Armazena no cache por 15 minutos
+    #     cache.set(cache_key, data, timeout=60*15)
 
-        return Response(data)
+    #     return Response(data)
 
     def create(self, request, *args, **kwargs):
         # Verifica se o email já está cadastrado
@@ -71,13 +73,18 @@ class UsuariosCreateViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
 
-class ClientesCreateViewSet(viewsets.ModelViewSet):
+class ClienteComUsuarioCreateViewSet(viewsets.ModelViewSet):
     queryset = Clientes.objects.all()
-    serializer_class = ClienteCreateSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.action in ['update', 'partial_update']:
+            return ClienteComUsuarioUpdateSerializer
+        return ClienteComUsuarioCreateSerializer
 
     def create(self, request, *args, **kwargs):
         # Verifica se o email já está cadastrado
-        email = request.data.get('usuario', {}).get('email')
+        email = request.data.get('email')
         if email and Usuarios.objects.filter(email=email).exists():
             return Response(
                 {'email': 'Já existe um usuário com este email.'},
@@ -105,12 +112,15 @@ class ClientesCreateViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED,
             headers=headers
         )
-    # permission_classes = [IsAuthenticated]
 
 
-class ParceirosCreateViewSet(viewsets.ModelViewSet):
+class ParceiroComUsuarioCreateViewSet(viewsets.ModelViewSet):
     queryset = Parceiros.objects.all()
-    serializer_class = ParceiroCreateSerializer
+
+    def get_serializer_class(self):
+        if self.action in ['update', 'partial_update']:
+            return ParceiroComUsuarioUpdateSerializer
+        return ParceiroComUsuarioCreateSerializer
 
     def create(self, request, *args, **kwargs):
         # Verifica se o email já está cadastrado

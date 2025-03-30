@@ -7,8 +7,8 @@ from django.db import models
 
 
 class Base(models.Model):
-    criado_em = models.DateTimeField()
-    atualizado_em = models.DateTimeField()
+    criado_em = models.DateTimeField(auto_now_add=True)
+    atualizado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         abstract = True
@@ -63,8 +63,16 @@ class Usuarios(Base):
 
 class Clientes(Base):
     id = models.SmallAutoField(primary_key=True)
-    id_usuarios = models.OneToOneField(
-        'Usuarios', models.DO_NOTHING, db_column='id_usuarios')
+    # id_usuarios = models.OneToOneField(
+    #     'Usuarios', models.DO_NOTHING, db_column='id_usuarios'
+    # )
+    id_usuarios = models.ForeignKey(
+        'Usuarios',
+        models.DO_NOTHING,
+        db_column='id_usuarios',
+        blank=True,
+        null=True
+    )
     cpf = models.CharField(unique=True, max_length=15)
 
     class Meta:
