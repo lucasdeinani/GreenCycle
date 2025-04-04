@@ -35,6 +35,7 @@ class Base(models.Model):
 class Usuarios(Base):
     id = models.SmallAutoField(primary_key=True)
     nome = models.CharField(max_length=100)
+    usuario = models.CharField(max_length=100)
     email = models.CharField(max_length=100, blank=True, null=True)
     senha = models.TextField()
     id_endereco = models.ForeignKey(
@@ -44,10 +45,6 @@ class Usuarios(Base):
         blank=True,
         null=True
     )
-
-    @property
-    def usuario(self):
-        return self
 
     # Campos necessários para o auth
     # PASSWORD_FIELD = 'senha'
@@ -74,6 +71,8 @@ class Clientes(Base):
         null=True
     )
     cpf = models.CharField(unique=True, max_length=15)
+    data_nascimento = models.DateField()
+    sexo = models.CharField(max_length=1)
 
     class Meta:
         managed = False
