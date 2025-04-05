@@ -126,16 +126,6 @@ class ClienteComUsuarioCreateSerializer(ValidacaoCFPMixin, ModelSerializer):
 
         return cliente
 
-    def update(self, instance, validated_data):
-        # Remove campos do usuário que não devem ser atualizados aqui
-        validated_data.pop('nome', None)
-        validated_data.pop('usuario', None)
-        validated_data.pop('email', None)
-        validated_data.pop('senha', None)
-        validated_data.pop('id_endereco', None)
-
-        return super().update(instance, validated_data)
-
 
 class ClienteComUsuarioUpdateSerializer(ValidacaoCFPMixin, ModelSerializer):
     nome = CharField(required=False)
@@ -170,7 +160,7 @@ class ClienteComUsuarioUpdateSerializer(ValidacaoCFPMixin, ModelSerializer):
             'id_endereco',
             'cpf',
             'data_nascimento',
-            'sexo',
+            'sexo'
         ]
 
     def validate_cpf(self, value):
@@ -231,6 +221,13 @@ class ParceiroComUsuarioCreateSerializer(ValidacaoCNPJMixin, ModelSerializer):
         allow_null=True
     )
     id_usuarios = PrimaryKeyRelatedField(read_only=True)
+    materiais = PrimaryKeyRelatedField(
+        queryset=Materiais.objects.all(),
+        many=True,
+        required=False,
+        write_only=True,
+        allow_null=True
+    )
 
     class Meta:
         model = Parceiros
@@ -244,7 +241,8 @@ class ParceiroComUsuarioCreateSerializer(ValidacaoCNPJMixin, ModelSerializer):
             'nome',           # Campo do usuário
             'email',          # Campo do usuário
             'senha',          # Campo do usuário
-            'id_endereco'     # Campo do usuário
+            'id_endereco',    # Campo do usuário
+            'materiais'       # Campo de materiais
         ]
         read_only_fields = [
             'id',
@@ -259,6 +257,9 @@ class ParceiroComUsuarioCreateSerializer(ValidacaoCNPJMixin, ModelSerializer):
         return value
 
     def create(self, validated_data):
+        # Extrai os materiais se existirem
+        materiais_data = validated_data.pop('materiais', [])
+
         # Extrai os dados do usuário
         usuario_data = {
             'nome': validated_data.pop('nome'),
@@ -277,17 +278,14 @@ class ParceiroComUsuarioCreateSerializer(ValidacaoCNPJMixin, ModelSerializer):
             **validated_data
         )
 
+        # Cria os relacionamentos com materiais
+        for material in materiais_data:
+            MateriaisParceiros.objects.create(
+                id_materiais=material,
+                id_parceiros=parceiro
+            )
+
         return parceiro
-
-    def update(self, instance, validated_data):
-        # Remove campos do usuário que não devem ser atualizados aqui
-        validated_data.pop('nome', None)
-        validated_data.pop('usuario', None)
-        validated_data.pop('email', None)
-        validated_data.pop('senha', None)
-        validated_data.pop('id_endereco', None)
-
-        return super().update(instance, validated_data)
 
 
 class ParceiroComUsuarioUpdateSerializer(ValidacaoCNPJMixin, ModelSerializer):
@@ -310,6 +308,13 @@ class ParceiroComUsuarioUpdateSerializer(ValidacaoCNPJMixin, ModelSerializer):
         allow_null=True
     )
     cnpj = CharField(required=False)
+    materiais = PrimaryKeyRelatedField(
+        queryset=Materiais.objects.all(),
+        many=True,
+        required=False,
+        write_only=True,
+        allow_null=True
+    )
 
     class Meta:
         model = Clientes
@@ -319,7 +324,8 @@ class ParceiroComUsuarioUpdateSerializer(ValidacaoCNPJMixin, ModelSerializer):
             'email',
             'senha',
             'id_endereco',
-            'cnpj'
+            'cnpj',
+            'materiais'
         ]
 
     def validate_cnpj(self, value):
@@ -328,6 +334,18 @@ class ParceiroComUsuarioUpdateSerializer(ValidacaoCNPJMixin, ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
+        # Atualiza materiais se fornecidos
+        if 'materiais' in validated_data:
+            materiais_data = validated_data.pop('materiais')
+            # Remove relacionamentos existentes
+            MateriaisParceiros.objects.filter(id_parceiros=instance).delete()
+            # Cria novos relacionamentos
+            for material in materiais_data:
+                MateriaisParceiros.objects.create(
+                    id_materiais=material,
+                    id_parceiros=instance
+                )
+
         # Atualiza dados do usuário
         usuario = instance.id_usuarios
         if 'nome' in validated_data:

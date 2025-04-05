@@ -124,7 +124,7 @@ class ParceiroComUsuarioCreateViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         # Verifica se o email já está cadastrado
-        email = request.data.get('usuario', {}).get('email')
+        email = request.data.get('email')
         if email and Usuarios.objects.filter(email=email).exists():
             return Response(
                 {'email': 'Já existe um usuário com este email.'},
